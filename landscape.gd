@@ -11,20 +11,8 @@ func _ready():
 	_quad(st, Vector3(-1, 0, 0), count)
 	_quad(st, Vector3(0, 0, -1), count)
 	
-	var noise = FastNoiseLite.new()
-	noise.noise_type = 2
-	noise.fractal_type = FastNoiseLite.FRACTAL_FBM
-	noise.fractal_octaves = 5  # Higher for more detail
-	noise.fractal_gain = 0.9   # Controls the amplitude of each octave
-	noise.frequency = 0.01  # Lower frequency for larger, smoother hills
-	noise.domain_warp_enabled = true
-	noise.domain_warp_frequency = 0.05
-	noise.domain_warp_amplitude = 30
-	
-	var image = noise.get_image(256, 256)
-	var texture = ImageTexture.create_from_image(image)
 	var material = StandardMaterial3D.new()
-	material.albedo_texture = texture
+	material.albedo_texture = ImageTexture.create_from_image(_heightmap(256, 256))
 	
 	st.generate_normals() # normals point perpendicular up from each face
 	var mesh = st.commit() # arranges mesh data structures into arrays for us
@@ -56,3 +44,17 @@ func _quad(st : SurfaceTool, pt : Vector3, count : Array[int]):
 	st.add_index(count[0] - 1)
 	
 	pass
+
+func _heightmap(x: int, y: int) -> Image:
+# return image of noise with dimensions (x, y)
+	var noise = FastNoiseLite.new()
+	noise.noise_type = 2
+	noise.fractal_type = FastNoiseLite.FRACTAL_FBM
+	noise.fractal_octaves = 5  # Higher for more detail
+	noise.fractal_gain = 0.9   # Controls the amplitude of each octave
+	noise.frequency = 0.01  # Lower frequency for larger, smoother hills
+	noise.domain_warp_enabled = true
+	noise.domain_warp_frequency = 0.05
+	noise.domain_warp_amplitude = 30
+	
+	return noise.get_image(x, y)
