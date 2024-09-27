@@ -52,7 +52,7 @@ func _quad(st : SurfaceTool, pt : Vector3, count : Array[int]):
 	st.add_index(count[0] - 2)
 	
 	st.add_index(count[0] - 4) # make the second triangle
-	st.add_index(count[0] - 3)
 	st.add_index(count[0] - 2)
+	st.add_index(count[0] - 1)
 	
 	pass
