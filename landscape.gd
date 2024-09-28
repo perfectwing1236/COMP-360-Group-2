@@ -62,6 +62,6 @@ func _quadgrid(x: int, z: int) -> SurfaceTool:
 	
 	for u in range(x): # corner of grid is at x, z
 		for v in range(z):
-			_quad(st, Vector3(u, 0, v), count, Vector2(float(u)/x-1, float(v)/z-1), Vector2(1.0/x, 1.0/z))
+			_quad(st, Vector3(u, 0, v), count, Vector2(float(u)/x, float(v)/z), Vector2(1.0/x, 1.0/z))
 	
 	return st
