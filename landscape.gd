@@ -1,10 +1,9 @@
 extends Node3D
-
 func _ready():
 	var land = MeshInstance3D.new()
 	
 	var noise = _heightmap(256, 256)
-	var st = _quadgrid(5, 5)
+	var st = _quadgrid(5, 5, noise)
 	
 	var material = StandardMaterial3D.new()
 	material.albedo_texture = ImageTexture.create_from_image(noise)
@@ -12,22 +11,34 @@ func _ready():
 	st.generate_normals() # normals point perpendicular up from each face
 	var mesh = st.commit() # arranges mesh data structures into arrays for us
 	land.mesh = mesh
+	land.material_override = material
 	add_child(land)
 	
 	pass
 
-func _quad(st : SurfaceTool, pt : Vector3, count : Array[int]):
-	st.set_uv( Vector2(0, 0) )
-	st.add_vertex( pt + Vector3(0, 0, 0) ) # vertex 0
+func _quad(st : SurfaceTool, pt : Vector3, count : Array[int], uvpt: Vector2, uvlen: Vector2, noise):
+	st.set_uv( Vector2(uvpt[0], uvpt[1]) )
+	#st.add_vertex( pt + Vector3(0, (1-noise.get_pixel(uvpt[0](noise.get_height()-1), uvpt[1](noise.get_width()-1)).r) * 5, 0) ) # vertex 0
+	st.add_vertex( pt + Vector3(0, _getHeight(uvpt[0], uvpt[1], noise), 0) ) # vertex 0
+	#st.add_vertex( pt + Vector3(0, 0, 0) ) # vertex 0
 	count[0] += 1
-	st.set_uv( Vector2(1, 0) )
-	st.add_vertex( pt + Vector3(1, 0, 0) ) # vertex 1
+	st.set_uv( Vector2(uvpt[0] + uvlen[0], uvpt[1]) )
+	#st.add_vertex( pt + Vector3(1, (1- noise.get_pixel((uvpt[0]+uvlen[0])(noise.get_height()-1), uvpt[1](noise.get_width()-1)).r) * 5, 0) ) # vertex 1
+	#st.add_vertex( pt + Vector3(1, _getHeight(pt.x*stepX,pt.z*stepZ), 0) ) # vertex 1
+	st.add_vertex( pt + Vector3(1, _getHeight(uvpt[0] + uvlen[0], uvpt[1], noise), 0) ) # vertex 1
+	#st.add_vertex( pt + Vector3(1, 0, 0) ) # vertex 1
 	count[0] += 1
-	st.set_uv( Vector2(1, 1) )
-	st.add_vertex( pt + Vector3(1, 0, 1) ) # vertex 2
+	st.set_uv( Vector2(uvpt[0] + uvlen[0], uvpt[1] + uvlen[1]) )
+	#st.add_vertex( pt + Vector3(1, (1-noise.get_pixel((uvpt[0]+uvlen[0])(noise.get_height()-1), (uvpt[1]+uvlen[1])(noise.get_width()-1)).r) * 5, 1) ) # vertex 2
+	#st.add_vertex( pt + Vector3(1, _getHeight(pt.x*stepX,pt.z*stepZ), 1) ) # vertex 2
+	st.add_vertex( pt + Vector3(1, _getHeight(uvpt[0] + uvlen[0],uvpt[1] + uvlen[1], noise), 1) ) # vertex 2
+	#st.add_vertex( pt + Vector3(1, 0, 1) ) # vertex 2
 	count[0] += 1
-	st.set_uv( Vector2(0, 1) )
-	st.add_vertex( pt + Vector3(0, 0, 1) ) # vertex 3
+	st.set_uv( Vector2(uvpt[0], uvpt[1] + uvlen[1]) )
+	#st.add_vertex( pt + Vector3(0, (1-noise.get_pixel(uvpt[0](noise.get_height()-1), (uvpt[1]+uvlen[1])(noise.get_width()-1)).r) * 5, 1) ) # vertex 3
+	#st.add_vertex( pt + Vector3(0, _getHeight(pt.x*stepX,pt.z*stepZ), 1) ) # vertex 3
+	st.add_vertex( pt + Vector3(0, _getHeight(uvpt[0], uvpt[1] + uvlen[1], noise), 1) ) # vertex 3
+	#st.add_vertex( pt + Vector3(0, 0, 1) ) # vertex 3
 	count[0] += 1
 	
 	st.add_index(count[0] - 4) # make the first triangle
@@ -54,13 +65,16 @@ func _heightmap(x: int, y: int) -> Image:
 	
 	return noise.get_image(x, y)
 	
-func _quadgrid(x: int, z: int) -> SurfaceTool:
+func _quadgrid(x: int, z: int, noise: Image) -> SurfaceTool:
 	var st = SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES) # mode controls kind of geometry
 	var count : Array[int] = [0]
 	
 	for u in range(x): # corner of grid is at x, z
 		for v in range(z):
-			_quad(st, Vector3(u, 0, v), count)
-	
+			_quad(st, Vector3(u, 0, v), count, Vector2(float(u)/x, float(v)/z), Vector2(1.0/x, 1.0/z), noise)
 	return st
+
+func _getHeight(x, z, noise:Image) -> float:
+	var lightness = noise.get_pixel(floor(x),floor(z)).r
+	return lightness
