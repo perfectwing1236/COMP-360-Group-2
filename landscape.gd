@@ -2,14 +2,8 @@ extends Node3D
 
 func _ready():
 	var land = MeshInstance3D.new()
-	var st = SurfaceTool.new()
-	st.begin(Mesh.PRIMITIVE_TRIANGLES) # mode controls kind of geometry
-	var count : Array[int] = [0]
 	
-	_quad(st, Vector3(-1, 0, -1), count)
-	_quad(st, Vector3(0, 0, 0), count)
-	_quad(st, Vector3(-1, 0, 0), count)
-	_quad(st, Vector3(0, 0, -1), count)
+	var st = _quadgrid(5, 5)
 	
 	var material = StandardMaterial3D.new()
 	material.albedo_texture = ImageTexture.create_from_image(_heightmap(256, 256))
@@ -58,3 +52,14 @@ func _heightmap(x: int, y: int) -> Image:
 	noise.domain_warp_amplitude = 30
 	
 	return noise.get_image(x, y)
+	
+func _quadgrid(x: int, z: int) -> SurfaceTool:
+	var st = SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES) # mode controls kind of geometry
+	var count : Array[int] = [0]
+	
+	for u in range(ceil(-x/2.0), ceil(x/2.0)): # loosely center grid on x = 0, z = 0
+		for v in range(ceil(-z/2.0), ceil(z/2.0)):
+			_quad(st, Vector3(u, 0, v), count)
+	
+	return st
