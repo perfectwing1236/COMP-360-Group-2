@@ -3,10 +3,11 @@ extends Node3D
 func _ready():
 	var land = MeshInstance3D.new()
 	
+	var noise = _heightmap(256, 256)
 	var st = _quadgrid(5, 5)
 	
 	var material = StandardMaterial3D.new()
-	material.albedo_texture = ImageTexture.create_from_image(_heightmap(256, 256))
+	material.albedo_texture = ImageTexture.create_from_image(noise)
 	
 	st.generate_normals() # normals point perpendicular up from each face
 	var mesh = st.commit() # arranges mesh data structures into arrays for us
@@ -58,8 +59,8 @@ func _quadgrid(x: int, z: int) -> SurfaceTool:
 	st.begin(Mesh.PRIMITIVE_TRIANGLES) # mode controls kind of geometry
 	var count : Array[int] = [0]
 	
-	for u in range(ceil(-x/2.0), ceil(x/2.0)): # loosely center grid on x = 0, z = 0
-		for v in range(ceil(-z/2.0), ceil(z/2.0)):
+	for u in range(x): # corner of grid is at x, z
+		for v in range(z):
 			_quad(st, Vector3(u, 0, v), count)
 	
 	return st
