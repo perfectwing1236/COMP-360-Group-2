@@ -8,3 +8,19 @@ Contributions:
 * Function to generate a grid of quads
 * Map noise texture onto grid
 * Organize kanban board
+* Vertex heightmap application
+* Logging of tasks in README
+
+### Grant Gilbert 300153121:
+* Organizing group communication
+* Creation of Github Repository and Project
+* Vertex heightmap application
+* Organizing Kanban Board
+* Logging of tasks in README
+
+### Ananya Sanap:
+* Providing initial code
+* Using FastNoiseLite to create a terrain image
+
+### Navraj Sohal:
+* Creating brief on methods for creating more natual-looking land with erosion algorithms
