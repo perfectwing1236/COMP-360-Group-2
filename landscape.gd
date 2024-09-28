@@ -18,16 +18,16 @@ func _ready():
 
 func _quad(st : SurfaceTool, pt : Vector3, count : Array[int], uvpt: Vector2, uvlen: Vector2, noise):
 	st.set_uv( Vector2(uvpt[0], uvpt[1]) )
-	st.add_vertex( pt + Vector3(0, (1-_getHeight(uvpt[0]*(noise.get_height()-1), uvpt[1]*(noise.get_width()-1),noise)), 0) ) # vertex 0
+	st.add_vertex( pt + Vector3(0, (_getHeight(uvpt[0]*(noise.get_height()), uvpt[1]*(noise.get_width()),noise)), 0) ) # vertex 0
 	count[0] += 1
 	st.set_uv( Vector2(uvpt[0] + uvlen[0], uvpt[1]) )
-	st.add_vertex( pt + Vector3(1, (1-_getHeight((uvpt[0]+uvlen[0])*(noise.get_height()-1), uvpt[1]*(noise.get_width()-1),noise)), 0) ) # vertex 1
+	st.add_vertex( pt + Vector3(1, (_getHeight((uvpt[0]+uvlen[0])*(noise.get_height()), uvpt[1]*(noise.get_width()),noise)), 0) ) # vertex 1
 	count[0] += 1
 	st.set_uv( Vector2(uvpt[0] + uvlen[0], uvpt[1] + uvlen[1]) )
-	st.add_vertex( pt + Vector3(1, (1-_getHeight((uvpt[0]+uvlen[0])*(noise.get_height()-1), (uvpt[1]+uvlen[1])*(noise.get_width()-1),noise)), 1) ) # vertex 2
+	st.add_vertex( pt + Vector3(1, (_getHeight((uvpt[0]+uvlen[0])*(noise.get_height()), (uvpt[1]+uvlen[1])*(noise.get_width()),noise)), 1) ) # vertex 2
 	count[0] += 1
 	st.set_uv( Vector2(uvpt[0], uvpt[1] + uvlen[1]) )
-	st.add_vertex( pt + Vector3(0, (1-_getHeight(uvpt[0]*(noise.get_height()-1), (uvpt[1]+uvlen[1])*(noise.get_width()-1),noise)), 1) ) # vertex 3
+	st.add_vertex( pt + Vector3(0, (_getHeight(uvpt[0]*(noise.get_height()), (uvpt[1]+uvlen[1])*(noise.get_width()),noise)), 1) ) # vertex 3
 	count[0] += 1
 	
 	st.add_index(count[0] - 4) # make the first triangle
