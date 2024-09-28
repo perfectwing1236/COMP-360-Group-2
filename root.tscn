@@ -28,4 +28,4 @@ environment = SubResource("Environment_hd402")
 script = ExtResource("1_p244r")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-0.707107, 0.5, -0.5, -1.42109e-14, 0.707107, 0.707107, 0.707107, 0.5, -0.5, 0, 38, 0)
+transform = Transform3D(-0.707107, 0.5, -0.5, -1.42109e-14, 0.707107, 0.707107, 0.707107, 0.5, -0.5, 0, 2, 0)
