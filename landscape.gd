@@ -3,8 +3,8 @@ extends Node3D
 func _ready():
 	var land = MeshInstance3D.new()
 	
-	var noise = _heightmap(256, 256)
-	var st = _quadgrid(5, 5)
+	var noise = _heightmap(76, 76)
+	var st = _quadgrid(75, 75)
 	
 	var material = StandardMaterial3D.new()
 	material.albedo_texture = ImageTexture.create_from_image(noise)
@@ -12,21 +12,22 @@ func _ready():
 	st.generate_normals() # normals point perpendicular up from each face
 	var mesh = st.commit() # arranges mesh data structures into arrays for us
 	land.mesh = mesh
+	land.material_override = material
 	add_child(land)
 	
 	pass
 
-func _quad(st : SurfaceTool, pt : Vector3, count : Array[int]):
-	st.set_uv( Vector2(0, 0) )
+func _quad(st : SurfaceTool, pt : Vector3, count : Array[int], uvpt: Vector2, uvlen: Vector2):
+	st.set_uv( Vector2(uvpt[0], uvpt[1]) )
 	st.add_vertex( pt + Vector3(0, 0, 0) ) # vertex 0
 	count[0] += 1
-	st.set_uv( Vector2(1, 0) )
+	st.set_uv( Vector2(uvpt[0] + uvlen[0], uvpt[1]) )
 	st.add_vertex( pt + Vector3(1, 0, 0) ) # vertex 1
 	count[0] += 1
-	st.set_uv( Vector2(1, 1) )
+	st.set_uv( Vector2(uvpt[0] + uvlen[0], uvpt[1] + uvlen[1]) )
 	st.add_vertex( pt + Vector3(1, 0, 1) ) # vertex 2
 	count[0] += 1
-	st.set_uv( Vector2(0, 1) )
+	st.set_uv( Vector2(uvpt[0], uvpt[1] + uvlen[1]) )
 	st.add_vertex( pt + Vector3(0, 0, 1) ) # vertex 3
 	count[0] += 1
 	
@@ -61,6 +62,6 @@ func _quadgrid(x: int, z: int) -> SurfaceTool:
 	
 	for u in range(x): # corner of grid is at x, z
 		for v in range(z):
-			_quad(st, Vector3(u, 0, v), count)
+			_quad(st, Vector3(u, 0, v), count, Vector2(float(u)/x-1, float(v)/z-1), Vector2(1.0/x, 1.0/z))
 	
 	return st
