@@ -16,6 +16,7 @@ Contributions:
 * Creation of Github Repository and Project
 * Vertex heightmap application
 * Organizing Kanban Board
+* Minor bug fixing
 * Logging of tasks in README
 
 ### Ananya Sanap:
