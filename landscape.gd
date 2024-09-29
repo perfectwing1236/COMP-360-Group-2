@@ -3,7 +3,7 @@ func _ready():
 	var land = MeshInstance3D.new()
 	
 	var noise = _heightmap(256, 256)
-	var st = _quadgrid(5, 5, noise)
+	var st = _quadgrid(10, 10, noise)
 	
 	var material = StandardMaterial3D.new()
 	material.albedo_texture = ImageTexture.create_from_image(noise)

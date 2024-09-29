@@ -28,4 +28,5 @@ environment = SubResource("Environment_hd402")
 script = ExtResource("1_p244r")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-0.999315, 0.02617, -0.02617, 0.00661936, 0.822087, 0.569323, 0.0364132, 0.56876, -0.821697, 2.54614, 3.28961, -1.4382)
+transform = Transform3D(-0.999315, 0.02617, -0.02617, 0.0101603, 0.873928, 0.48595, 0.035588, 0.485351, -0.873595, 4.32677, 3.591, -2.08988)
+fov = 90.0
