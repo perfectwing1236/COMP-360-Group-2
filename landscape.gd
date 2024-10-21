@@ -1,3 +1,5 @@
+@tool
+
 extends Node3D
 func _ready():
 	var land = MeshInstance3D.new()
@@ -14,7 +16,10 @@ func _ready():
 	land.material_override = material
 	add_child(land)
 	
-	pass
+	var curve = Hilbert.new(512, 512, 4)
+	add_child(curve)
+	
+	#land.owner = get_tree().edited_scene_root
 
 func _quad(st : SurfaceTool, pt : Vector3, count : Array[int], uvpt: Vector2, uvlen: Vector2, noise):
 	st.set_uv( Vector2(uvpt[0], uvpt[1]) )
@@ -37,8 +42,6 @@ func _quad(st : SurfaceTool, pt : Vector3, count : Array[int], uvpt: Vector2, uv
 	st.add_index(count[0] - 4) # make the second triangle
 	st.add_index(count[0] - 2)
 	st.add_index(count[0] - 1)
-	
-	pass
 
 func _heightmap(x: int, y: int) -> Image:
 # return image of noise with dimensions (x, y)

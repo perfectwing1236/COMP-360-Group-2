@@ -2,64 +2,44 @@ class_name Hilbert
 
 extends Node2D
 
-var x: int
-var y: int
-var stepx: int
-var stepy: int
-var level: int
-var curve: Curve2D
+var curve: PackedVector2Array
 
-func _init(x:int,y:int,level:int,direction:String="Up"):
-	self.x=x
-	self.y=y
-	self.level=level
-	self.direction=direction
-	self.stepx=floor(x/(2*level))
-	self.stepy=floor(y/(2*level))
+func _init(x:int, y:int, maxlvl:int):
+	self.curve = PackedVector2Array()
+	_hilbert_step(x, y, 1, maxlvl)
+
+func _hilbert_step(height: float, width: float, level: int, maxlvl: int):
+	
 	#Instructions for drawing the base shapes in each direction
-	if(level==1):
-		match self.direction:
-			"Up":
-				self.curve.add_point(Vector2(self.stepx,2*self.stepy))
-				self.curve.add_point(Vector2(self.stepx,self.stepy))
-				self.curve.add_point(Vector2(2*self.stepx,self.stepy))
-				self.curve.add_point(Vector2(2*self.stepx,2*self.stepy))
-			"Left":
-				self.curve.add_point(Vector2(self.stepx,self.stepy))
-				self.curve.add_point(Vector2(2*self.stepx,self.stepy))
-				self.curve.add_point(Vector2(2*self.stepx,2*self.stepy))
-				self.curve.add_point(Vector2(self.stepx,2*self.stepy))
-			"Down":
-				self.curve.add_point(Vector2(2*self.stepx,self.stepy))
-				self.curve.add_point(Vector2(2*self.stepx,2*self.stepy))
-				self.curve.add_point(Vector2(self.stepx,2*self.stepy))
-				self.curve.add_point(Vector2(self.stepx,self.stepy))
-			"Right":
-				self.curve.add_point(Vector2(2*self.stepx,2*self.stepy))
-				self.curve.add_point(Vector2(self.stepx,2*self.stepy))
-				self.curve.add_point(Vector2(self.stepx,self.stepy))
-				self.curve.add_point(Vector2(2*self.stepx,self.stepy))
-	#Instructions for recursively adding combinations of base shapes
+	if(level == 1):
+		self.curve.append(Vector2(height/4.0,3*width/4.0))
+		self.curve.append(Vector2(height/4.0,width/4.0))
+		self.curve.append(Vector2(3*height/4.0,width/4.0))
+		self.curve.append(Vector2(3*height/4.0,3*width/4.0))
 	else:
-		match self.direction:
-			"Up":
-				_init(x/2,y/2,level-1,"Left")
-				_init(x/2,y/2,level-1,"Up")
-				_init(x/2,y/2,level-1,"Up")
-				_init(x/2,y/2,level-1,"Right")
-			"Left":
-				_init(x/2,y/2,level-1,"Up")
-				_init(x/2,y/2,level-1,"Left")
-				_init(x/2,y/2,level-1,"Left")
-				_init(x/2,y/2,level-1,"Down")
-			"Down":
-				_init(x/2,y/2,level-1,"Right")
-				_init(x/2,y/2,level-1,"Down")
-				_init(x/2,y/2,level-1,"Down")
-				_init(x/2,y/2,level-1,"Left")
-			"Right":
-				_init(x/2,y/2,level-1,"Down")
-				_init(x/2,y/2,level-1,"Right")
-				_init(x/2,y/2,level-1,"Right")
-				_init(x/2,y/2,level-1,"Up")
-	pass
+# Create a 2x2 grid of 0.5x size curves
+		self.curve *= Transform2D().scaled(Vector2(0.5, 0.5))
+
+		var curve1 = self.curve.duplicate()
+		
+		var curve2 = self.curve.duplicate()
+		curve2 *= Transform2D(0, Vector2(-height/2.0, 0))
+		
+		var curve3 = self.curve.duplicate()
+		curve3.reverse()
+		curve3 *= Transform2D(PI/2, Vector2(height, -width/2.0))
+		
+		self.curve.reverse()
+		self.curve *= Transform2D(-PI/2, Vector2(-height/2.0, width/2.0))
+		
+		self.curve.append_array(curve1)
+		self.curve.append_array(curve2)
+		self.curve.append_array(curve3)
+
+	#Instructions for recursively adding combinations of base shapes
+	if level < maxlvl:
+		_hilbert_step(height, width, level + 1, maxlvl)
+
+# Draw the 2d space filling curve on the screen:
+#func _draw():
+	#draw_polyline(curve, Color.RED)
