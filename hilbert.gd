@@ -10,14 +10,14 @@ func _init(x:int, y:int, maxlvl:int):
 
 func _hilbert_step(height: float, width: float, level: int, maxlvl: int):
 	
-	#Instructions for drawing the base shapes in each direction
+# Instructions for drawing the base shape
 	if(level == 1):
 		self.curve.append(Vector2(height/4.0,3*width/4.0))
 		self.curve.append(Vector2(height/4.0,width/4.0))
 		self.curve.append(Vector2(3*height/4.0,width/4.0))
 		self.curve.append(Vector2(3*height/4.0,3*width/4.0))
 	else:
-# Create a 2x2 grid of 0.5x size curves
+# Create a 2x2 grid of 0.5x size curves, scaling and rotating to create a hilbert curve
 		self.curve *= Transform2D().scaled(Vector2(0.5, 0.5))
 
 		var curve1 = self.curve.duplicate()
@@ -36,7 +36,7 @@ func _hilbert_step(height: float, width: float, level: int, maxlvl: int):
 		self.curve.append_array(curve2)
 		self.curve.append_array(curve3)
 
-	#Instructions for recursively adding combinations of base shapes
+# Recurse if not at requested level
 	if level < maxlvl:
 		_hilbert_step(height, width, level + 1, maxlvl)
 
