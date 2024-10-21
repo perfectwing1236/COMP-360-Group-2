@@ -10,3 +10,5 @@ Contributions:
 ### Ananya Sanap:
 
 ### Navraj Sohal:
+
+### Safia Singla 300200357:
