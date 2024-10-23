@@ -19,12 +19,6 @@ var tangent_curr : Vector3
 var tangent_next : Vector3
 var roll_angle : float = 0.0
 
-# Camera control variables
-var orbit_distance : float = 12.0  # Distance of the camera from the glider
-var orbit_angle_h : float = 0.0  # Horizontal orbit angle
-var orbit_angle_v : float = 0.0  # Vertical orbit angle
-var sensitivity : float = 0.1  # Mouse sensitivity
-
 func _ready():
 	skip = 0
 	_setup_path()
@@ -44,7 +38,6 @@ func _setup_path():
 		var pt = r * Vector3(x, 0, z) + origin
 		curve.add_point( pt )
 	
-	# main idea is to rotate the main control points by 90 deegrees to get tangent handles
 	for k in range(N):
 		var x = cos(k * 2*PI/float(N))
 		var z = sin(k * 2*PI/float(N))
