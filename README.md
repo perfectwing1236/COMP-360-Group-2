@@ -8,6 +8,7 @@ Contributions:
 * Work on hilbert curve
 
 ### Ananya Sanap:
+* Work on instructions for glider
 
 ### Navraj Sohal:
 
