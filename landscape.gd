@@ -16,9 +16,6 @@ func _ready():
 	land.material_override = material
 	add_child(land)
 	
-	var curve = Hilbert.new(512, 512, 4)
-	add_child(curve)
-	
 	#land.owner = get_tree().edited_scene_root
 
 func _quad(st : SurfaceTool, pt : Vector3, count : Array[int], uvpt: Vector2, uvlen: Vector2, noise):

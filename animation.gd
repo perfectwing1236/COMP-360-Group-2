@@ -27,6 +27,8 @@ func _ready():
 	pass
 #
 func _setup_path():
+	var hilbert = Hilbert.new(512, 512, 4)
+	
 	path = Path3D.new()
 	path.transform = Transform3D.IDENTITY
 	var curve := Curve3D.new()
