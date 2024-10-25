@@ -34,23 +34,28 @@ func _setup_path():
 	var curve := Curve3D.new()
 	
 # Choose every 20th point in the hilbert curve to create our spline
-	for point in range(len(hilbert.curve)):
-		if ceil(point/20.0) == floor(point/20.0):
-			curve.add_point(Vector3(hilbert.curve[point].y, 25, hilbert.curve[point].x))
+	var ptlist = PackedVector3Array()
+	for ptnum in range(1, len(hilbert.curve)):
+		if ceil(ptnum/20.0) == floor(ptnum/20.0):
+			var newpt = Vector3(hilbert.curve[ptnum].y, 25, hilbert.curve[ptnum].x)
+			ptlist.append(newpt)
+			curve.add_point(newpt)
 	curve.add_point(curve.get_baked_points()[0])
-	#
-	#var N = 16
-	#var r = 5
-	#
-	#for k in range(N):
-		#var x = cos(k * 2*PI/float(N))
-		#var z = sin(k * 2*PI/float(N))
-		#var pt_out = r * (2.0/N)*Vector3(x, 0, z).rotated(Vector3.UP, -PI/2)
-		#curve.set_point_out(k, pt_out)
-		#x = cos((k+1) * 2*PI/float(N))
-		#z = sin((k+1) * 2*PI/float(N))
-		#var pt_in  = r * (2.0/N)*Vector3(x, 0, z).rotated(Vector3.UP, PI/2)
-		#curve.set_point_in(k+1, pt_in)
+	
+# Set in and out angle for each point to angle between previous and next point
+	assert(len(ptlist) > 1)
+	for pt in range(len(ptlist)+1):
+		if pt != 0 and pt != len(ptlist):
+			var angout = ptlist[pt-1].direction_to(ptlist[(pt+1)%len(ptlist)])/0.2
+			curve.set_point_in(pt, -angout)
+			curve.set_point_out(pt, angout)
+# First and last points of the curve are the same in order to loop,
+# use second and last points from ptlist to calculate angles, since ptlist does
+# not contain the (duplicate) last point from the curve
+		else:
+			var angout = ptlist[-1].direction_to(ptlist[1])/0.2
+			curve.set_point_in(pt, -angout)
+			curve.set_point_out(pt, angout)
 	
 	pts = curve.get_baked_points()
 	n = len(pts)-1
