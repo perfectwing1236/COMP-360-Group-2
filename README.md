@@ -13,3 +13,5 @@ Contributions:
 ### Navraj Sohal:
 
 ### Safia Singla 300200357:
+* Initial debugging
+* Work on the camera movement
