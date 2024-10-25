@@ -27,29 +27,30 @@ func _ready():
 	pass
 #
 func _setup_path():
-	var hilbert = Hilbert.new(512, 512, 4)
+	var hilbert = Hilbert.new(100, 100, 4)
 	
 	path = Path3D.new()
 	path.transform = Transform3D.IDENTITY
 	var curve := Curve3D.new()
-	var N = 16
-	var r = 5
-	var origin = Vector3(10, 3.5, 10)
-	for k in range(N+1):
-		var x = cos(k * 2*PI/float(N))
-		var z = sin(k * 2*PI/float(N))
-		var pt = r * Vector3(x, 0, z) + origin
-		curve.add_point( pt )
 	
-	for k in range(N):
-		var x = cos(k * 2*PI/float(N))
-		var z = sin(k * 2*PI/float(N))
-		var pt_out = r * (2.0/N)*Vector3(x, 0, z).rotated(Vector3.UP, -PI/2)
-		curve.set_point_out(k, pt_out)
-		x = cos((k+1) * 2*PI/float(N))
-		z = sin((k+1) * 2*PI/float(N))
-		var pt_in  = r * (2.0/N)*Vector3(x, 0, z).rotated(Vector3.UP, PI/2)
-		curve.set_point_in(k+1, pt_in)
+# Choose every 20th point in the hilbert curve to create our spline
+	for point in range(len(hilbert.curve)):
+		if ceil(point/20.0) == floor(point/20.0):
+			curve.add_point(Vector3(hilbert.curve[point].y, 25, hilbert.curve[point].x))
+	curve.add_point(curve.get_baked_points()[0])
+	#
+	#var N = 16
+	#var r = 5
+	#
+	#for k in range(N):
+		#var x = cos(k * 2*PI/float(N))
+		#var z = sin(k * 2*PI/float(N))
+		#var pt_out = r * (2.0/N)*Vector3(x, 0, z).rotated(Vector3.UP, -PI/2)
+		#curve.set_point_out(k, pt_out)
+		#x = cos((k+1) * 2*PI/float(N))
+		#z = sin((k+1) * 2*PI/float(N))
+		#var pt_in  = r * (2.0/N)*Vector3(x, 0, z).rotated(Vector3.UP, PI/2)
+		#curve.set_point_in(k+1, pt_in)
 	
 	pts = curve.get_baked_points()
 	n = len(pts)-1
@@ -61,7 +62,7 @@ func _setup_path():
 	
 	path.curve = curve
 
-	scape.scale = Vector3(2,2,2)
+	scape.scale = Vector3(10,10,10)
 	pfollow = PathFollow3D.new()
 	#glider.transform = Transform3D.IDENTITY
 	glider.scale = Vector3(0.05, 0.05, 0.05)
