@@ -3,6 +3,7 @@ Contributions:
 
 ### Kaleb Reid 300184418:
 * Work on hilbert curve
+* Work on spline
 
 ### Grant Gilbert 300153121:
 * Work on hilbert curve
