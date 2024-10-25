@@ -3,6 +3,7 @@ extends Node3D
 @onready var glider = $glider2
 @onready var cam = $Camera3D
 @onready var marker = $marker
+@onready var scape = $Landscape
 
 var path : Path3D
 var pfollow : PathFollow3D
@@ -29,9 +30,9 @@ func _setup_path():
 	path = Path3D.new()
 	path.transform = Transform3D.IDENTITY
 	var curve := Curve3D.new()
-	var N = 8
-	var r = 50
-	var origin = Vector3(0, 70, 0)
+	var N = 16
+	var r = 5
+	var origin = Vector3(10, 3.5, 10)
 	for k in range(N+1):
 		var x = cos(k * 2*PI/float(N))
 		var z = sin(k * 2*PI/float(N))
@@ -57,10 +58,13 @@ func _setup_path():
 		add_child(new_marker)
 	
 	path.curve = curve
+
+	scape.scale = Vector3(2,2,2)
 	pfollow = PathFollow3D.new()
-	glider.transform = Transform3D.IDENTITY
-	cam.transform = Transform3D.IDENTITY
-	cam.position = Vector3(4, 8, -12)
+	#glider.transform = Transform3D.IDENTITY
+	glider.scale = Vector3(0.05, 0.05, 0.05)
+	#cam.transform = Transform3D.IDENTITY
+	cam.position = Vector3(.10,.25,-.30)
 	cam.look_at(glider.position)
 	cam.reparent(glider)
 	glider.rotate_y(PI)
@@ -86,8 +90,8 @@ func _process(delta):
 		forward = (next - curr).normalized()  # Find the direction from the current point to the next.
 
 		# Calculate the direction (tangent) between the current and next points.
-		var tangent_curr = (pts[k + 1] - pts[k]).normalized() if k < pts.size() - 1 else forward
-		var tangent_next = (pts[k + 2] - pts[k + 1]).normalized() if k < pts.size() - 2 else forward
+		tangent_curr = (pts[k + 1] - pts[k]).normalized() if k < pts.size() - 1 else forward
+		tangent_next = (pts[k + 2] - pts[k + 1]).normalized() if k < pts.size() - 2 else forward
 
 		# Find how far along the current section of the path the glider is.
 		var percent_traveled = fposmod(pfollow.progress_ratio * n, 1.0)
@@ -110,7 +114,7 @@ func _process(delta):
 		roll_amount = roll_amount * roll_adjustment  # Adjust the roll based on this scaling factor.
 
 	# Apply the rolling effect to the glider:
-	var roll_angle = roll_amount * sin(t * 2 * PI / 5)  # Calculate the roll angle, making it oscillate with time.
+	roll_angle = roll_amount * sin(t * 2 * PI / 5)  # Calculate the roll angle, making it oscillate with time.
 	var rolling_axis = forward  # The glider will roll around its forward direction.
 	glider.rotate_object_local(rolling_axis, roll_angle)  # Apply the rotation (roll) to the glider.
 
