@@ -12,7 +12,14 @@ Contributions:
 * Work on instructions for glider
 
 ### Navraj Sohal:
+* Particle effects
 
 ### Safia Singla 300200357:
 * Initial debugging
 * Work on the camera movement
+
+### Taylor
+* Rough work for looping 2D spline
+
+### Ambarish
+* Spline visualization during play
