@@ -27,7 +27,7 @@ func _ready():
 	pass
 #
 func _setup_path():
-	var hilbert = Hilbert.new(100, 100, 4)
+	var hilbert = Hilbert.new(60, 60, 4)
 	
 	path = Path3D.new()
 	path.transform = Transform3D.IDENTITY
@@ -68,9 +68,10 @@ func _setup_path():
 	path.curve = curve
 
 	scape.scale = Vector3(10,10,10)
+	scape.position = Vector3(-20,0,-20)
 	pfollow = PathFollow3D.new()
 	#glider.transform = Transform3D.IDENTITY
-	glider.scale = Vector3(0.05, 0.05, 0.05)
+	glider.scale = Vector3(0.03, 0.03, 0.03)
 	#cam.transform = Transform3D.IDENTITY
 	cam.position = Vector3(.10,.25,-.30)
 	cam.look_at(glider.position)
