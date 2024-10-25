@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://landscape.gd" id="1_p244r"]
 [ext_resource type="Script" path="res://animation.gd" id="1_sjs1r"]
-[ext_resource type="PackedScene" uid="uid://bojpgosergky2" path="res://glider.glb" id="2_dqwpq"]
+[ext_resource type="PackedScene" uid="uid://csq6tvqp6b262" path="res://glider.glb" id="2_dqwpq"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6v7yn"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
