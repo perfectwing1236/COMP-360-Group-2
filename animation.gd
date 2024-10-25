@@ -27,35 +27,8 @@ func _ready():
 	pass
 #
 func _setup_path():
-	var hilbert = Hilbert.new(100, 100, 4)
 	
-	path = Path3D.new()
-	path.transform = Transform3D.IDENTITY
-	var curve := Curve3D.new()
-	
-# Choose every 20th point in the hilbert curve to create our spline
-	var ptlist = PackedVector3Array()
-	for ptnum in range(1, len(hilbert.curve)):
-		if ceil(ptnum/20.0) == floor(ptnum/20.0):
-			var newpt = Vector3(hilbert.curve[ptnum].y, 35, hilbert.curve[ptnum].x)
-			ptlist.append(newpt)
-			curve.add_point(newpt)
-	curve.add_point(curve.get_baked_points()[0])
-	
-# Set in and out angle for each point to angle between previous and next point
-	assert(len(ptlist) > 1)
-	for pt in range(len(ptlist)+1):
-		if pt != 0 and pt != len(ptlist):
-			var angout = ptlist[pt-1].direction_to(ptlist[(pt+1)%len(ptlist)])/0.2
-			curve.set_point_in(pt, -angout)
-			curve.set_point_out(pt, angout)
-# First and last points of the curve are the same in order to loop,
-# use second and last points from ptlist to calculate angles, since ptlist does
-# not contain the (duplicate) last point from the curve
-		else:
-			var angout = ptlist[-1].direction_to(ptlist[1])/0.2
-			curve.set_point_in(pt, -angout)
-			curve.set_point_out(pt, angout)
+	var curve = _create_spline(Hilbert.new(100, 100, 4))
 	
 	pts = curve.get_baked_points()
 	n = len(pts)-1
@@ -65,6 +38,8 @@ func _setup_path():
 		new_marker.position =  pts[k]
 		add_child(new_marker)
 	
+	path = Path3D.new()
+	path.transform = Transform3D.IDENTITY
 	path.curve = curve
 
 	scape.scale = Vector3(16, 16, 16)
@@ -133,4 +108,31 @@ func _process(delta):
 	# Adjust the glider's orientation (basis) for its rolling motion.
 	glider.basis = Basis(Vector3.UP, PI) * Transform3D.IDENTITY.basis  # Reset and rotate around the UP axis.
 	glider.basis = Basis(Vector3(0, 0, 1), sin(t * 2 * PI / 5) * -PI / 8.0) * glider.basis  # Add a rotation around Z-axis.
-	pass
+
+func _create_spline(sfc):
+	var curve := Curve3D.new()
+	
+# Choose every 20th point in the hilbert curve to create our spline
+	var ptlist = PackedVector3Array()
+	for ptnum in range(1, len(sfc.curve)):
+		if ceil(ptnum/20.0) == floor(ptnum/20.0):
+			var newpt = Vector3(sfc.curve[ptnum].y, 35, sfc.curve[ptnum].x)
+			ptlist.append(newpt)
+			curve.add_point(newpt)
+	curve.add_point(curve.get_baked_points()[0])
+	
+# Set in and out angle for each point to angle between previous and next point
+	assert(len(ptlist) > 1)
+	for pt in range(len(ptlist)+1):
+		if pt != 0 and pt != len(ptlist):
+			var angout = ptlist[pt-1].direction_to(ptlist[(pt+1)%len(ptlist)])/0.2
+			curve.set_point_in(pt, -angout)
+			curve.set_point_out(pt, angout)
+# First and last points of the curve are the same in order to loop,
+# use second and last points from ptlist to calculate angles, since ptlist does
+# not contain the (duplicate) last point from the curve
+		else:
+			var angout = ptlist[-1].direction_to(ptlist[1])/0.2
+			curve.set_point_in(pt, -angout)
+			curve.set_point_out(pt, angout)
+	return curve
