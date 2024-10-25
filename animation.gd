@@ -109,30 +109,30 @@ func _process(delta):
 	glider.basis = Basis(Vector3.UP, PI) * Transform3D.IDENTITY.basis  # Reset and rotate around the UP axis.
 	glider.basis = Basis(Vector3(0, 0, 1), sin(t * 2 * PI / 5) * -PI / 8.0) * glider.basis  # Add a rotation around Z-axis.
 
-func _create_spline(sfc):
-	var curve := Curve3D.new()
+func _create_spline(curve):
+	var newcurve := Curve3D.new()
 	
-# Choose every 20th point in the hilbert curve to create our spline
+# Choose every 20th point from the old curve to create our spline
 	var ptlist = PackedVector3Array()
-	for ptnum in range(1, len(sfc.curve)):
+	for ptnum in range(1, len(curve.curve)):
 		if ceil(ptnum/20.0) == floor(ptnum/20.0):
-			var newpt = Vector3(sfc.curve[ptnum].y, 35, sfc.curve[ptnum].x)
+			var newpt = Vector3(curve.curve[ptnum].y, 35, curve.curve[ptnum].x)
 			ptlist.append(newpt)
-			curve.add_point(newpt)
-	curve.add_point(curve.get_baked_points()[0])
+			newcurve.add_point(newpt)
+	newcurve.add_point(newcurve.get_baked_points()[0])
 	
 # Set in and out angle for each point to angle between previous and next point
 	assert(len(ptlist) > 1)
 	for pt in range(len(ptlist)+1):
 		if pt != 0 and pt != len(ptlist):
 			var angout = ptlist[pt-1].direction_to(ptlist[(pt+1)%len(ptlist)])/0.2
-			curve.set_point_in(pt, -angout)
-			curve.set_point_out(pt, angout)
+			newcurve.set_point_in(pt, -angout)
+			newcurve.set_point_out(pt, angout)
 # First and last points of the curve are the same in order to loop,
 # use second and last points from ptlist to calculate angles, since ptlist does
 # not contain the (duplicate) last point from the curve
 		else:
 			var angout = ptlist[-1].direction_to(ptlist[1])/0.2
-			curve.set_point_in(pt, -angout)
-			curve.set_point_out(pt, angout)
-	return curve
+			newcurve.set_point_in(pt, -angout)
+			newcurve.set_point_out(pt, angout)
+	return newcurve
