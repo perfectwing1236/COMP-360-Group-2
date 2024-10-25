@@ -27,7 +27,7 @@ func _ready():
 	pass
 #
 func _setup_path():
-	var hilbert = Hilbert.new(60, 60, 4)
+	var hilbert = Hilbert.new(100, 100, 4)
 	
 	path = Path3D.new()
 	path.transform = Transform3D.IDENTITY
@@ -37,7 +37,7 @@ func _setup_path():
 	var ptlist = PackedVector3Array()
 	for ptnum in range(1, len(hilbert.curve)):
 		if ceil(ptnum/20.0) == floor(ptnum/20.0):
-			var newpt = Vector3(hilbert.curve[ptnum].y, 25, hilbert.curve[ptnum].x)
+			var newpt = Vector3(hilbert.curve[ptnum].y, 35, hilbert.curve[ptnum].x)
 			ptlist.append(newpt)
 			curve.add_point(newpt)
 	curve.add_point(curve.get_baked_points()[0])
@@ -67,8 +67,8 @@ func _setup_path():
 	
 	path.curve = curve
 
-	scape.scale = Vector3(10,10,10)
-	scape.position = Vector3(-20,0,-20)
+	scape.scale = Vector3(16, 16, 16)
+	scape.position = Vector3(-30, 0, -30)
 	pfollow = PathFollow3D.new()
 	#glider.transform = Transform3D.IDENTITY
 	glider.scale = Vector3(0.03, 0.03, 0.03)
