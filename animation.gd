@@ -56,7 +56,6 @@ func _setup_path():
 	path.add_child(pfollow)
 	pfollow.transform = Transform3D.IDENTITY
 	add_child(path)
-	marker.transform = Transform3D.IDENTITY
 	
 	pass
 
@@ -101,9 +100,6 @@ func _process(delta):
 	roll_angle = roll_amount * sin(t * 2 * PI / 5)  # Calculate the roll angle, making it oscillate with time.
 	var rolling_axis = forward  # The glider will roll around its forward direction.
 	glider.rotate_object_local(rolling_axis, roll_angle)  # Apply the rotation (roll) to the glider.
-
-	# Move the marker to follow the glider along the path, keeping it slightly ahead.
-	marker.position = lerp(marker.position, pfollow.position + 20 * forward, 0.05)
 
 	# Adjust the glider's orientation (basis) for its rolling motion.
 	glider.basis = Basis(Vector3.UP, PI) * Transform3D.IDENTITY.basis  # Reset and rotate around the UP axis.
