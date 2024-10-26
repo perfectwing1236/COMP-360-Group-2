@@ -15,9 +15,9 @@ var forward : Vector3
 var skip : int
 
 # New variables for interpolation and rolling
-var tangent_curr : Vector3
-var tangent_next : Vector3
-var roll_angle : float = 0.0
+#var tangent_curr : Vector3
+#var tangent_next : Vector3
+#var roll_angle : float = 0.0
 
 func _ready():
 	skip = 0
@@ -29,13 +29,17 @@ func _create_path_image():
 	
 	var image = Image.create_empty(100, 100, false, Image.FORMAT_RGBA8)
 	
+# Set whole image to transparent
 	for x in range(100):
 		for y in range(100):
 			image.set_pixel(x, y, Color.TRANSPARENT)
 	
+# Color points of pfollow in red
 	for pt in pts:
+		assert(pt.x < 100 and pt.x > 0 and pt.z < 100 and pt.z > 0)
 		image.set_pixel(int(pt.x), int(pt.z), Color.RED)
 		
+# Create mesh, apply texture to it, and scale it
 	var pathplane = MeshInstance3D.new()
 	
 	var pathmaterial = StandardMaterial3D.new()
