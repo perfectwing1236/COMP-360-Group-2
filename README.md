@@ -1,5 +1,5 @@
 # COMP 360 Group 2 Assignment 2
-Contributions:
+## Contributions
 
 ### Kaleb Reid 300184418:
 * Work on hilbert curve
@@ -23,3 +23,7 @@ Contributions:
 
 ### Ambarish
 * Spline visualization during play
+
+## Links
+https://github.com/perfectwing1236/COMP-360-Group-2/tree/Assignment-2
+https://github.com/users/perfectwing1236/projects/2/
