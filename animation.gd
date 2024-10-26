@@ -24,7 +24,6 @@ func _ready():
 	skip = 0
 	_setup_path()
 	pfollow.loop = true     #enable looping for the glider path
-	pass
 #
 func _setup_path():
 	
@@ -56,8 +55,6 @@ func _setup_path():
 	path.add_child(pfollow)
 	pfollow.transform = Transform3D.IDENTITY
 	add_child(path)
-	
-	pass
 
 func _process(delta):
 	t = fmod(t + delta, 10)  # Keep increasing t with time, looping it between 0 and 10.
@@ -98,8 +95,8 @@ func _process(delta):
 
 	# Apply the rolling effect to the glider:
 	roll_angle = roll_amount * sin(t * 2 * PI / 5)  # Calculate the roll angle, making it oscillate with time.
-	var rolling_axis = forward  # The glider will roll around its forward direction.
-	glider.rotate_object_local(rolling_axis, roll_angle)  # Apply the rotation (roll) to the glider.
+	#var rolling_axis = forward  # The glider will roll around its forward direction.
+	#glider.rotate_object_local(rolling_axis, roll_angle)  # Apply the rotation (roll) to the glider.
 
 	# Adjust the glider's orientation (basis) for its rolling motion.
 	glider.basis = Basis(Vector3.UP, PI) * Transform3D.IDENTITY.basis  # Reset and rotate around the UP axis.
