@@ -3,7 +3,10 @@
 
 ### Kaleb Reid 300184418:
 * Work on hilbert curve
-* Work on spline
+* Create spline from curve
+* Attempt at working on glider roll
+* Create 2D red visualization of spline
+* Add debugging features
 
 ### Grant Gilbert 300153121:
 * Work on hilbert curve
