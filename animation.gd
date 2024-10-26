@@ -2,7 +2,6 @@ extends Node3D
 
 @onready var glider = $glider2
 @onready var cam = $Camera3D
-@onready var marker = $marker
 @onready var scape = $Landscape
 
 var path : Path3D
@@ -35,7 +34,7 @@ func _create_path_image():
 			image.set_pixel(x, y, Color.TRANSPARENT)
 	
 	for pt in pts:
-		image.set_pixel(pt.x, pt.z, Color.RED)
+		image.set_pixel(int(pt.x), int(pt.z), Color.RED)
 		
 	var pathplane = MeshInstance3D.new()
 	

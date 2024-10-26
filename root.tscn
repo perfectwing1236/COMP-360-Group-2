@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cxmvaeupdbyf8"]
+[gd_scene load_steps=7 format=3 uid="uid://cxmvaeupdbyf8"]
 
 [ext_resource type="Script" path="res://landscape.gd" id="1_p244r"]
 [ext_resource type="Script" path="res://animation.gd" id="1_sjs1r"]
@@ -16,8 +16,6 @@ background_mode = 2
 sky = SubResource("Sky_obenw")
 tonemap_mode = 2
 glow_enabled = true
-
-[sub_resource type="BoxMesh" id="BoxMesh_08f6v"]
 
 [node name="Root" type="Node3D"]
 script = ExtResource("1_sjs1r")
@@ -38,6 +36,3 @@ fov = 90.0
 
 [node name="glider2" parent="." instance=ExtResource("2_dqwpq")]
 transform = Transform3D(0.001, 0, 0, 0, 0.001, 0, 0, 0, 0.001, 0, 0, 0)
-
-[node name="marker" type="MeshInstance3D" parent="."]
-mesh = SubResource("BoxMesh_08f6v")
