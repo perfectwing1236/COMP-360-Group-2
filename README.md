@@ -16,6 +16,7 @@
 
 ### Ambarish
 * Red visualization of 2D spline during play
+* Added transparency to the red spline
 
 ### Navraj Sohal:
 * Particle effects
