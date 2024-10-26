@@ -11,6 +11,9 @@
 ### Ananya Sanap:
 * Work on instructions for glider
 
+### Ambarish
+* Red visualization of 2D spline during play
+
 ### Navraj Sohal:
 * Particle effects
 
@@ -20,9 +23,6 @@
 
 ### Taylor
 * Rough work for looping 2D spline
-
-### Ambarish
-* Spline visualization during play
 
 ## Links
 https://github.com/perfectwing1236/COMP-360-Group-2/tree/Assignment-2
