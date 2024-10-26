@@ -36,7 +36,7 @@ func _create_path_image():
 	
 # Color points of pfollow in red
 	for pt in pts:
-		assert(pt.x < 100 and pt.x > 0 and pt.z < 100 and pt.z > 0)
+#Added transparency around the red spline 
 		image.set_pixel(int(pt.x), int(pt.z), Color.RED)
 		
 # Create mesh, apply texture to it, and scale it
